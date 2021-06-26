@@ -1,14 +1,18 @@
 package veterinaria;
 
 import veterinaria.exceptions.NotAnExistingPet;
+import veterinaria.models.client.Client;
+import veterinaria.models.client.ClientCollection;
 import veterinaria.models.pet.Pet;
 import veterinaria.models.pet.PetCollection;
+import veterinaria.models.schedule.Schedule;
+import veterinaria.models.schedule.Turn;
 import veterinaria.util.Veterinaria;
 
 public class Main {
 
     public static void main(String[] args) {
-        Veterinaria vet = new Veterinaria();
+        //Veterinaria vet = new Veterinaria();
         /*//prueba Pets
         Pet mascota = new Pet("max","perro",10,'m',5,1.9f);//0
         PetCollection lista=new PetCollection();
@@ -24,5 +28,20 @@ public class Main {
         }
         System.out.println(lista.showCollection());
         //fin prueba Pets*/
+
+        /*
+        //TODO PRUEBAS TURNOS
+        Client client = new Client("pedro", "gomez","202020","2121210","colombres","visa");
+        Turn turno = new Turn(client,"lala");
+        ClientCollection coleccion = new ClientCollection();
+        Schedule schedule = new Schedule();
+        coleccion.add(client);
+        schedule.add(turno);
+
+        System.out.println(schedule.showCollection());
+        */
+
+
+
     }
 }
