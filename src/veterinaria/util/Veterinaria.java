@@ -2,19 +2,18 @@ package veterinaria.util;
 
 import veterinaria.models.client.Client;
 import veterinaria.models.client.ClientCollection;
-import veterinaria.models.pet.PetCollection;
 import veterinaria.models.schedule.Schedule;
 
 import java.util.Scanner;
 
 public class Veterinaria {
-    private ClientCollection clientSet;
-    private PetCollection petList;
+    private ClientCollection<Client> clientSet;
     private Schedule schedule;
     static Scanner scan = new Scanner(System.in);
 
     public Veterinaria() {
         clientSet = new ClientCollection();
+
         Menu();
     }
 
@@ -23,24 +22,27 @@ public class Veterinaria {
         clientSet.fileToCollection();
 
         do {
-            System.out.println("~~~~~~~ Veterinaria Walrus ~~~~~~~");
-            System.out.println("");
+            System.out.println("~~~~~~~ Veterinaria Walrus ~~~~~~~\n");
             System.out.println("1 - Menu Clientes.");
             System.out.println("2 - Menu Mascotas.");
             System.out.println("3 - Menu Agenda.");
             System.out.println("0 -  Salir.");
 
             option = scan.nextInt();
+            scan.nextLine();
 
             switch(option) {
                 case 1:
                     clientMenu();
                     break;
                 case 2:
+                    petMenu(); // Puente para buscar el cliente y luego llama a MenuMascotas.
+                    //menuMascotas();//ta chckeado el funcionamento de lo poco q tengo
                     break;
                 case 3:
                     break;
                 case 0:
+                    System.out.println("Cerrando...");
                     break;
                 default:
                     System.out.println("Ingrese una opción válida.");
@@ -55,8 +57,7 @@ public class Veterinaria {
         int option;
 
         do {
-            System.out.println("~~~~~~~ Veterinaria Walrus ~~~~~~~");
-            System.out.println("");
+            System.out.println("~~~~~~~ Veterinaria Walrus ~~~~~~~\n");
             System.out.println("1 - Añadir Cliente.");
             System.out.println("2 - Modificar Cliente.");
             System.out.println("3 - Listar Clientes.");
@@ -94,8 +95,7 @@ public class Veterinaria {
             Client c;
 
             String name, lastName, DNI, phone, address, paymentMethod;
-            System.out.println("~~~~~~~ Veterinaria Walrus ~~~~~~~");
-            System.out.println("");
+            System.out.println("~~~~~~~ Veterinaria Walrus ~~~~~~~\n");
             System.out.println("Ingrese el nombre del cliente: ");
             name = scan.nextLine();
             System.out.println("Ingrese el apellido del cliente: ");
@@ -122,8 +122,7 @@ public class Veterinaria {
 
     private void clientUpdate() {
         int option;
-        System.out.println("~~~~~~~ Veterinaria Walrus ~~~~~~~");
-        System.out.println("");
+        System.out.println("~~~~~~~ Veterinaria Walrus ~~~~~~~\n");
         System.out.println("1 - Modificar nombre.");
         System.out.println("0 - Regresar.");
         option = scan.nextInt();
@@ -145,8 +144,7 @@ public class Veterinaria {
     private void nameModify() {
         String DNI, name;
         Client found;
-        System.out.println("~~~~~~~ Veterinaria Walrus ~~~~~~~");
-        System.out.println("");
+        System.out.println("~~~~~~~ Veterinaria Walrus ~~~~~~~\n");
         System.out.println("Ingrese el DNI del cliente a modificar: ");
         DNI = scan.nextLine();
         found = clientSet.search(DNI);  // Buscamos el cliente y lo guardamos.
@@ -164,8 +162,7 @@ public class Veterinaria {
     private void clientRemove() {
         String DNI;
         Client found;
-        System.out.println("~~~~~~~ Veterinaria Walrus ~~~~~~~");
-        System.out.println("");
+        System.out.println("~~~~~~~ Veterinaria Walrus ~~~~~~~\n");
         System.out.println("Ingrese el DNI del cliente a remover: ");
         DNI = scan.nextLine();
         found = clientSet.search(DNI);  // Buscamos el cliente y lo guardamos.
@@ -180,7 +177,55 @@ public class Veterinaria {
     // Fin Apartado Clientes
 
     // Apartado Pets
-    // mi código
+    private void petMenu() {
+        String DNI;
+        Client aux;
+        System.out.println("~~~~~~~ Veterinaria Walrus ~~~~~~~\n");
+        System.out.println("Ingrese el DNI del dueño de la mascota: ");
+        DNI = scan.nextLine();
+        aux = clientSet.search(DNI);
+        if(aux != null) {
+            menuMascotas(aux);
+        } else {
+            System.out.println("El cliente no existe.");
+        }
+    }
+    public void menuMascotas(Client c){
+        //zona declaración de variables
+        int option;
+        // En vez de hacer esto con la petlist, ahora que tenemos el cliente, editamos la lista de adentro de el.
+        // petList= new PetCollection(aux.getClientPetCollection().getPetList());//a petlist le paso la petCollection que hay dentro del cliente aux
+        //fin zona declaración de variables
+
+        do {
+            System.out.println("~~~~~~~ Menu de Mascotas ~~~~~~~");
+            System.out.println("~~~~~~~ Cliente " + c.getName() + " " + c.getLastName() + " ~~~~~~~");
+            System.out.println("1 - Agregar Mascota.");
+            System.out.println("2 - Listar Mascotas.");
+            System.out.println("0 - Regresar.");
+
+            option = scan.nextInt();
+
+            switch(option) {
+                case 1:
+                    // petList.create();
+                    c.getClientPetCollection().create();
+                    System.out.println(c.getClientPetCollection().showCollection());
+                    break;
+                case 2:
+                    System.out.println(c.getClientPetCollection().showCollection());
+                    //subMenuMascotas();
+                    break;
+                case 0:
+                    break;
+                default:
+                    System.out.println("Ingrese una opción válida.");
+                    break;
+            }
+        }while(option!=0);
+    }
+    //toDo subMenuMascotas(){}
+
     // Fin Apartado Pets
 
     // Apartado Schedule

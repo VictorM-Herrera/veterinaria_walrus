@@ -6,9 +6,11 @@ import veterinaria.util.ICollection;
 import java.io.*;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Scanner;
 
 public class ClientCollection<E extends Person> implements ICollection, Serializable {
     private HashSet<E> clientSet;
+    private static Scanner scan = new Scanner(System.in);
     File file;
 
     public ClientCollection() {
@@ -32,10 +34,9 @@ public class ClientCollection<E extends Person> implements ICollection, Serializ
     public String showCollection() {
         StringBuilder builder = new StringBuilder();
         Iterator<E> it = clientSet.iterator();
-        while (it.hasNext())
-        {
-            Client aux = (Client)it.next();
-            if(aux.isStatus()) {
+        while (it.hasNext()) {
+            Client aux = (Client) it.next();
+            if (aux.isStatus()) {
                 builder.append(aux).append("\n");
             }
         }
@@ -43,9 +44,11 @@ public class ClientCollection<E extends Person> implements ICollection, Serializ
     }
 
     @Override
-    public void showSpecific(int data) {
-
+    public String showSpecific(int data) {
+    return "";
     }
+
+
 
     public Client search(String DNI) {
         Iterator<E> it = clientSet.iterator();

@@ -25,7 +25,7 @@ public class Schedule implements ICollection, Serializable {
     }
 
     @Override
-    public void showSpecific(int data) {
-
+    public String showSpecific(int data) {
+    return "";
     }
 }

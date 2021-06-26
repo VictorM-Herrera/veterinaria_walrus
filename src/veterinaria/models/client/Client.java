@@ -8,7 +8,7 @@ public class Client extends Person {
     private static int clientsQuantity = 0;
     private int id;
     private String paymentMethod;
-    private PetCollection petList;
+    private PetCollection clientPetCollection;//la creo para porder crear y usar el menu :P
     private boolean status;
 
     public Client() {
@@ -16,7 +16,7 @@ public class Client extends Person {
         clientsQuantity++;
         id = clientsQuantity;
         paymentMethod = "";
-        petList = new PetCollection();
+        clientPetCollection = new PetCollection();
         status = true;
     }
 
@@ -25,7 +25,7 @@ public class Client extends Person {
         clientsQuantity++;
         this.id = clientsQuantity;
         this.paymentMethod = paymentMethod;
-        this.petList = new PetCollection();
+        clientPetCollection = new PetCollection();
         status = true;
     }
 
@@ -48,13 +48,21 @@ public class Client extends Person {
         this.status = status;
     }
 
+    public PetCollection getClientPetCollection() {
+        return clientPetCollection;
+    }
+
+    public void setClientPetCollection(PetCollection clientPetCollection) {
+        this.clientPetCollection = clientPetCollection;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         Client client = (Client) o;
-        return id == client.id && Objects.equals(paymentMethod, client.paymentMethod) && Objects.equals(petList, client.petList);
+        return id == client.id && Objects.equals(paymentMethod, client.paymentMethod) && Objects.equals(clientPetCollection, client.clientPetCollection);
     }
 
     @Override
@@ -63,6 +71,6 @@ public class Client extends Person {
                 "Estado: " + status +
                 ", " + super.toString() +
                 ", Método de Pago: '" + paymentMethod + '\'' +
-                '}';
+                '}' + "\nMascotas: \n" + clientPetCollection.showCollection();
     }
 }
