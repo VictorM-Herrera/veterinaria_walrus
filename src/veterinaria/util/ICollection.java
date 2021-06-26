@@ -2,6 +2,6 @@ package veterinaria.util;
 
 public interface ICollection {
     public void add(Object obj);
-    public String showCollection();
-    public void showSpecific(int data);
+    public StringBuilder showCollection();
+    public String showSpecific(int data);
 }
