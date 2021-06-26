@@ -42,11 +42,12 @@ public class PetCollection implements ICollection, Serializable {
             } while (name.length() == 0);
             do {
                 System.out.println("Ingresa la Raza de la mascota");
-                race = scan.next();
+                race = scan.nextLine();
             } while (race.length() == 0);
             do {
                 System.out.println("Ingresa la edad de la mascota");
                 age = scan.nextInt();
+                scan.nextLine();
             } while (age <= 0);
             do {
                 System.out.println("Ingresa el sexo de la mascota (m/f)");
@@ -188,41 +189,46 @@ public class PetCollection implements ICollection, Serializable {
         switch (op) {
 //nombre
             case 1 -> {
+                System.out.println("Ingrese el nuevo nombre de la mascota: ");
                 name = scan.next();
                 mascota.setName(name);
                 msj= "Realizado";
             }
 //raza
             case 2 -> {
+                System.out.println("Ingrese la nueva raza de la mascota: ");
                 race = scan.next();
                 mascota.setRace(race);
                 msj= "Realizado";
             }
 //edad
             case 3 -> {
+                System.out.println("Ingrese la nueva edad de la mascota: ");
                 age = scan.nextInt();
                 mascota.setAge(age);
                 msj= "Realizado";
             }
 //sexo
             case 4 -> {
+                System.out.println("Ingrese el nuevo sexo de la mascota: ");
                 sex = scan.next().charAt(0);
                 mascota.setSex(sex);
                 msj= "Realizado";
             }
 //peso
             case 5 -> {
+                System.out.println("Ingrese el nuevo peso de la mascota: ");
                 peso = scan.nextFloat();
                 mascota.setWeight(peso);
                 msj= "Realizado";
             }
             case 6 -> {
+                System.out.println("Ingrese la nueva altura de la mascota: ");
                 altura = scan.nextFloat();
                 mascota.setHeight(altura);
                 msj= "Realizado";
             }
             default -> msj= "Ingrese una opcion valida";
-
         }
         return msj;
     }

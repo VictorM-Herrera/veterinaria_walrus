@@ -2,14 +2,20 @@ package veterinaria.models.client;
 
 import veterinaria.models.pet.PetCollection;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.util.HashSet;
 import java.util.Objects;
 
 public class Client extends Person {
-    private static int clientsQuantity = 0;
+    private static int clientsQuantity = setClientsQuantity();
     private int id;
     private String paymentMethod;
     private PetCollection clientPetCollection;//la creo para porder crear y usar el menu :P
     private boolean status;
+    private static File file;
 
     public Client() {
         super();
@@ -56,6 +62,24 @@ public class Client extends Person {
         this.clientPetCollection = clientPetCollection;
     }
 
+    private static int setClientsQuantity() {
+        file = new File("Clients.dat");
+        int id = 0;
+        if (file.exists()){
+            try{
+                FileInputStream fis = new FileInputStream("Clients.dat");
+                ObjectInputStream ois = new ObjectInputStream(fis);
+                HashSet<Client> clientSet = (HashSet<Client>) ois.readObject();
+                id = clientSet.size();
+            }catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+        return id;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -68,8 +92,7 @@ public class Client extends Person {
     @Override
     public String toString() {
         return "[Cliente ID: " + id + "] {" +
-                "Estado: " + status +
-                ", " + super.toString() +
+                super.toString() +
                 ", Método de Pago: '" + paymentMethod + '\'' +
                 '}' + "\nMascotas: \n" + clientPetCollection.showCollection();
     }

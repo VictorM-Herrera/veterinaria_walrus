@@ -59,4 +59,14 @@ public class Turn implements Serializable {
     public void setDate(Date date) {
         this.date = date;
     }
+
+    @Override
+    public String toString() {
+        return "Turn{" +
+                "turnNumber=" + turnNumber +
+                ", client=" + client.getName() + " " + client.getLastName() +
+                ", reason='" + reason + '\'' +
+                ", date=" + date +
+                '}';
+    }
 }

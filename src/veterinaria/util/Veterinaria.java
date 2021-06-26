@@ -1,7 +1,9 @@
 package veterinaria.util;
 
+import veterinaria.exceptions.NotAnExistingPet;
 import veterinaria.models.client.Client;
 import veterinaria.models.client.ClientCollection;
+import veterinaria.models.pet.Pet;
 import veterinaria.models.schedule.Schedule;
 
 import java.util.Scanner;
@@ -190,11 +192,10 @@ public class Veterinaria {
             System.out.println("El cliente no existe.");
         }
     }
+
     public void menuMascotas(Client c){
         //zona declaración de variables
         int option;
-        // En vez de hacer esto con la petlist, ahora que tenemos el cliente, editamos la lista de adentro de el.
-        // petList= new PetCollection(aux.getClientPetCollection().getPetList());//a petlist le paso la petCollection que hay dentro del cliente aux
         //fin zona declaración de variables
 
         do {
@@ -208,13 +209,12 @@ public class Veterinaria {
 
             switch(option) {
                 case 1:
-                    // petList.create();
                     c.getClientPetCollection().create();
                     System.out.println(c.getClientPetCollection().showCollection());
                     break;
                 case 2:
                     System.out.println(c.getClientPetCollection().showCollection());
-                    //subMenuMascotas();
+                    subMenuMascotas(c);
                     break;
                 case 0:
                     break;
@@ -222,10 +222,70 @@ public class Veterinaria {
                     System.out.println("Ingrese una opción válida.");
                     break;
             }
+            clientSet.collectionToFile();
         }while(option!=0);
     }
     //toDo subMenuMascotas(){}
+    private void subMenuMascotas(Client c) {
+        int op, i;
+        Pet aux;
 
+        System.out.println("1 - Modificar Mascota.");
+        System.out.println("2 - Eliminar una Mascota.");
+        System.out.println("0 - Regresar.");
+
+        op = scan.nextInt();
+        scan.nextLine();
+
+        switch(op) {
+            case 1:
+                i = indiceMascota();
+                aux = c.getClientPetCollection().returnPet(i);
+                menuModificarMascota(aux, c);
+                break;
+            case 2:
+                i = indiceMascota();
+                try {
+                    c.getClientPetCollection().petRemove(i);
+                } catch (NotAnExistingPet notAnExistingPet) {
+                    notAnExistingPet.printStackTrace();
+                }
+                break;
+            case 0:
+                break;
+            default:
+                System.out.println("Ingrese una opción válida.");
+                break;
+
+        }
+    }
+
+    private int indiceMascota() {
+        int op;
+        System.out.println("Ingrese el número de la mascota: ");
+
+        op = scan.nextInt();
+        scan.nextLine();
+        return op;
+    }
+
+    private void menuModificarMascota(Pet aux, Client c) {
+        int op;
+
+        System.out.println("¿Qué desea modificar?\n");
+        System.out.println("1 - Nombre.");
+        System.out.println("2 - Raza.");
+        System.out.println("3 - Edad.");
+        System.out.println("4 - Sexo.");
+        System.out.println("5 - Peso.");
+        System.out.println("6 - Altura.");
+        System.out.println("0 - Regresar.");
+
+        op = scan.nextInt();
+        scan.nextLine();
+
+        System.out.println(c.getClientPetCollection().modificar(aux, op));
+    }
     // Fin Apartado Pets
 
     // Apartado Schedule

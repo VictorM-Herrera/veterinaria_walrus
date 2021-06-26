@@ -20,10 +20,10 @@ public class Schedule implements ICollection, Serializable {
 
     @Override
     public void add(Object obj) {
-        Turn turno = (Turn) obj;
-        if(turno instanceof Turn){
-            if(!exist(turno.getTurnNumber())){
-                turnHashMap.put(turno.getTurnNumber(), turno);
+        //Turn turno = (Turn) obj;
+        if(obj instanceof Turn){
+            if(!exist(((Turn) obj).getTurnNumber())){
+                turnHashMap.put(((Turn) obj).getTurnNumber(), (Turn) obj);
             }
         }
     }
@@ -37,7 +37,7 @@ public class Schedule implements ICollection, Serializable {
             Map.Entry<Integer, Turn> entry = (Map.Entry<Integer, Turn>) it.next();
             builder.append(entry.getKey() + " / " + entry.getValue().toString() + "\n");
         }
-        return null;
+        return builder.toString();
     }
 
     @Override
@@ -69,5 +69,12 @@ public class Schedule implements ICollection, Serializable {
             turnHashMap.put(turn.getTurnNumber(),turn);
         }
 
+    }
+
+    @Override
+    public String toString() {
+        return "Schedule{" +
+                "turnHashMap=" + turnHashMap +
+                '}';
     }
 }
