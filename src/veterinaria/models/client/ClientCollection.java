@@ -101,7 +101,7 @@ public class ClientCollection<E extends Person> implements ICollection, Serializ
             try {
                 FileInputStream fis = new FileInputStream("Clients.dat");
                 ObjectInputStream ois = new ObjectInputStream(fis);
-                HashSet<E> clubs = (HashSet<E>) ois.readObject();
+                clientSet = (HashSet<E>) ois.readObject();
                 ois.close();
                 System.out.println("Archivo Clientes Cargado.");
             } catch (FileNotFoundException e) {

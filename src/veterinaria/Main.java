@@ -24,6 +24,5 @@ public class Main {
         }
         System.out.println(lista.showCollection());
         //fin prueba Pets*/
-
     }
 }
