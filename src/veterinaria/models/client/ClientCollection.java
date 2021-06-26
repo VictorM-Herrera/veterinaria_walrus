@@ -18,12 +18,12 @@ public class ClientCollection<E extends Person> implements ICollection, Serializ
     }
 
     @Override
-    public String showCollection() {
+    public StringBuilder showCollection() {
         return null;
     }
 
     @Override
-    public void showSpecific(int data) {
-
+    public String showSpecific(int data) {
+    return "";
     }
 }

@@ -20,12 +20,12 @@ public class Schedule implements ICollection, Serializable {
     }
 
     @Override
-    public String showCollection() {
+    public StringBuilder showCollection() {
         return null;
     }
 
     @Override
-    public void showSpecific(int data) {
-
+    public String showSpecific(int data) {
+    return "";
     }
 }
