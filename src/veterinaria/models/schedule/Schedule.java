@@ -5,6 +5,8 @@ import veterinaria.models.client.ClientCollection;
 import veterinaria.util.ICollection;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 
@@ -66,15 +68,17 @@ public class Schedule implements ICollection, Serializable {
             do {
                 System.out.println("Ingrese la fecha del turno: dd/mm/yyyy");
                 fecha = scan.nextLine();
-                int year = Integer.valueOf(fecha.substring(6, 10));
-                int month = Integer.valueOf(fecha.substring(3, 5));
-                int day = Integer.valueOf(fecha.substring(0, 2));
-                System.out.println(year);
-                System.out.println(month);
-                System.out.println(day);
-                date = new Date(year, month, day);
+                //
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy");
+                String dateInString = fecha;
+                date = null;
+                try {
+                    date = sdf.parse(dateInString);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
             }while(fecha.length() != 10);
-            turn = new Turn(client,reason, date);
+            turn = new Turn(client, reason, date);
             turnHashMap.put(turn.getTurnNumber(),turn);
         }
     }

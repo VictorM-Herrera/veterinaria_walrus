@@ -59,7 +59,7 @@ public class Turn implements Serializable {
                 ", Cliente: " + client.getName() + " " + client.getLastName() +
                 ", DNI: " + client.getDNI() +
                 ", Motivo: '" + reason + '\'' +
-                ", Fecha: " + date.getDay() + "/" + date.getMonth() + "/" + date.getYear() +
+                ", Fecha: " + date.toInstant().toString().substring(8, 10) + "/" + date.toInstant().toString().substring(5, 7) + "/" + date.toInstant().toString().substring(0,4) +
                 '}';
     }
 }
