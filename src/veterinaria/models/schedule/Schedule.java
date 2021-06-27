@@ -80,6 +80,7 @@ public class Schedule implements ICollection, Serializable {
             }while(fecha.length() != 10);
             turn = new Turn(client, reason, date);
             turnHashMap.put(turn.getTurnNumber(),turn);
+
         }
     }
 
