@@ -1,6 +1,7 @@
 package veterinaria.models.client;
 
 import veterinaria.exceptions.NotAClientObjectException;
+import veterinaria.exceptions.NotAnExistingClient;
 import veterinaria.util.ICollection;
 
 import java.io.*;
@@ -99,39 +100,44 @@ public class ClientCollection<E extends Person> implements ICollection, Serializ
         Client found;
         System.out.println("Ingrese el DNI del cliente a modificar: ");
         DNI = scan.nextLine();
-        found = search(DNI);
-        if (found != null) {
-            System.out.println("1 - Modificar nombre.");
-            System.out.println("2 - Modificar apellido.");
-            System.out.println("3 - Modificar teléfono.");
-            System.out.println("4 - Modificar dirección.");
-            System.out.println("0 - Regresar.");
-            option = scan.nextInt();
-            scan.nextLine();
+        try {
+            found = search(DNI);
+            if (found != null) {
+                System.out.println("1 - Modificar nombre.");
+                System.out.println("2 - Modificar apellido.");
+                System.out.println("3 - Modificar teléfono.");
+                System.out.println("4 - Modificar dirección.");
+                System.out.println("0 - Regresar.");
+                option = scan.nextInt();
+                scan.nextLine();
 
-            switch(option) {
-                case 1:
-                    nameModify(found);
-                    break;
-                case 2:
-                    lastNameModify(found);
-                    break;
-                case 3:
-                    phoneModify(found);
-                    break;
-                case 4:
-                    addressModify(found);
-                    break;
-                case 0:
-                    break;
-                default:
-                    System.out.println("Ingrese una opción válida.");
-                    break;
+                switch (option) {
+                    case 1:
+                        nameModify(found);
+                        break;
+                    case 2:
+                        lastNameModify(found);
+                        break;
+                    case 3:
+                        phoneModify(found);
+                        break;
+                    case 4:
+                        addressModify(found);
+                        break;
+                    case 0:
+                        break;
+                    default:
+                        System.out.println("Ingrese una opción válida.");
+                        break;
+                }
             }
-        } else {
-            System.out.println("El cliente no existe.");
+                } catch(NotAnExistingClient notAnExistingClient){
+                notAnExistingClient.printStackTrace();
+            }
+
+
         }
-    }
+
 
 
     private void nameModify(Client c) {
@@ -186,7 +192,7 @@ public class ClientCollection<E extends Person> implements ICollection, Serializ
         clientSet.add((E) c);           // Ingresamos el cliente actualizado en la colección.
     }
 
-    public Client search(String DNI) {
+    public Client search(String DNI) throws NotAnExistingClient {
         Iterator<E> it = clientSet.iterator();
         Client found = null;
         while (it.hasNext())
@@ -196,7 +202,10 @@ public class ClientCollection<E extends Person> implements ICollection, Serializ
                 found = aux;
                 break;
             }
+        }if(found == null){
+            throw new NotAnExistingClient("El cliente ingresado no existe");
         }
+
         return found;
     }
 
@@ -212,14 +221,12 @@ public class ClientCollection<E extends Person> implements ICollection, Serializ
         System.out.println("~~~~~~~ Veterinaria Walrus ~~~~~~~\n");
         System.out.println("Ingrese el DNI del cliente a remover: ");
         DNI = scan.nextLine();
-        found = search(DNI);  // Buscamos el cliente y lo guardamos.
-        if (found != null) {
-            remove((E) found);        // Removemos el cliente del hashSet genérico.
-            found.setStatus(false);         // Cambiamos el estado del cliente a falso.
-            add(found);           // Ingresamos el cliente actualizado en la colección.
-        } else {
-            System.out.println("El cliente no existe.");
+        try {
+            found = search(DNI);  // Buscamos el cliente y lo guardamos.
+        } catch (NotAnExistingClient notAnExistingClient) {
+            notAnExistingClient.printStackTrace();
         }
+
     }
 
     public void collectionToFile() {
@@ -227,7 +234,6 @@ public class ClientCollection<E extends Person> implements ICollection, Serializ
         if (!file.exists()){
             try{
                 file.createNewFile();
-                System.out.println(file.getName() + " ha sido creado.");
             }catch (IOException e) {
                 e.printStackTrace();
             }
@@ -239,7 +245,6 @@ public class ClientCollection<E extends Person> implements ICollection, Serializ
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             oos.writeObject(clientSet);
             oos.close();
-            System.out.println("Colección guardada en el archivo.");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -255,7 +260,6 @@ public class ClientCollection<E extends Person> implements ICollection, Serializ
                 ObjectInputStream ois = new ObjectInputStream(fis);
                 clientSet = (HashSet<E>) ois.readObject();
                 ois.close();
-                System.out.println("Archivo Clientes Cargado.");
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {

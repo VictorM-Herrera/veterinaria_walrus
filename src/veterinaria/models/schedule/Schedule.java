@@ -3,6 +3,8 @@ package veterinaria.models.schedule;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import veterinaria.exceptions.NotAnExistingClient;
+import veterinaria.exceptions.NotAnExistingTurn;
 import veterinaria.models.client.Client;
 import veterinaria.models.client.ClientCollection;
 import veterinaria.util.ICollection;
@@ -13,10 +15,11 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
-
+/**
+ * Clase de Agenda
+ */
 public class Schedule implements ICollection, Serializable {
     // La clave del mapa es el numero de los turnos.
-    // TODO Investigar sobre funcionamiento de hashmaps.
     private HashMap<Integer, Turn> turnHashMap;
     private static Scanner scan = new Scanner(System.in);
 
@@ -41,7 +44,9 @@ public class Schedule implements ICollection, Serializable {
 
         while(it.hasNext()){
             Map.Entry<Integer, Turn> entry = (Map.Entry<Integer, Turn>) it.next();
-            builder.append("[" + entry.getKey() + "] " + entry.getValue().toString() + "\n");
+            if(turnHashMap.get((Integer)entry.getKey()).isStatus()) {
+                builder.append("[" + entry.getKey() + "] " + entry.getValue().toString() + "\n");
+            }
         }
         return builder.toString();
     }
@@ -61,31 +66,36 @@ public class Schedule implements ICollection, Serializable {
         Client client;
         String dni="", reason, fecha;
         Date date;
-        //TODO PONER ESTO EN UNA EXCEPCION DE CLIENTE NO ENCONTRADO
 
         System.out.println("Ingrese el DNI del cliente: ");
         dni = scan.nextLine();
-        client = collection.search(dni);
-        if(client != null){
-            System.out.println("Ingrese la razon del turno: ");
-            reason = scan.nextLine();
-            do {
-                System.out.println("Ingrese la fecha del turno: dd/mm/yyyy");
-                fecha = scan.nextLine();
-                //
-                SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy");
-                String dateInString = fecha;
-                date = null;
-                try {
-                    date = sdf.parse(dateInString);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-            }while(fecha.length() != 10);
-            turn = new Turn(client, reason, date);
-            turnHashMap.put(turn.getTurnNumber(),turn);
-
+        try {
+            client = collection.search(dni);
+            if(client != null){
+                do {
+                    System.out.println("Ingrese la razon del turno: ");
+                    reason = scan.nextLine();
+                }while (reason.length()==0);
+                do {
+                    System.out.println("Ingrese la fecha del turno: dd/mm/yyyy");
+                    fecha = scan.nextLine();
+                    //
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy");
+                    String dateInString = fecha;
+                    date = null;
+                    try {
+                        date = sdf.parse(dateInString);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                }while(fecha.length() != 10);
+                turn = new Turn(client, reason, date);
+                turnHashMap.put(turn.getTurnNumber(),turn);
+            }
+        } catch (NotAnExistingClient notAnExistingClient) {
+            notAnExistingClient.printStackTrace();
         }
+
     }
 
 
@@ -93,10 +103,6 @@ public class Schedule implements ICollection, Serializable {
 
         JSONArray result = null;
         ArrayList<Turn> turnsArrayList = new ArrayList<>(turnHashMap.values());
-        System.out.println("--arraylist");
-        for(int i = 0; i < turnsArrayList.size(); i++) {
-            System.out.println(turnsArrayList.get(i));
-        }
         try {
             JSONArray turnJSONArray = new JSONArray();
 
@@ -114,6 +120,7 @@ public class Schedule implements ICollection, Serializable {
                 turnJSONObject.put("client", clientJSONObject);
                 turnJSONObject.put("reason", turnsArrayList.get(i).getReason());
                 turnJSONObject.put("date", turnsArrayList.get(i).getDate());
+                turnJSONObject.put("status",turnsArrayList.get(i).isStatus());
 
                 turnJSONArray.put(turnJSONObject);
             }
@@ -124,6 +131,21 @@ public class Schedule implements ICollection, Serializable {
         return result;
     }
 
+    public void deleteTurn(int turnNumber) throws NotAnExistingTurn {
+        if (turnHashMap.containsKey(turnNumber)) {
+            turnHashMap.get(turnNumber).setStatus(false);
+        }else{
+            throw new NotAnExistingTurn("El turno ingresado no existe!");
+        }
+    }
+
+    public void modifyTurn(int turnNumber, String newReason) throws NotAnExistingTurn{
+        if(turnHashMap.containsKey(turnNumber)) {
+            turnHashMap.get(turnNumber).setReason(newReason);
+        }else{
+            throw new NotAnExistingTurn("El turno ingresado no existe!");
+        }
+    }
     @Override
     public String toString() {
         return "Schedule{" +

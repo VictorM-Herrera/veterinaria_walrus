@@ -1,6 +1,8 @@
 package veterinaria.util;
 
+import veterinaria.exceptions.NotAnExistingClient;
 import veterinaria.exceptions.NotAnExistingPet;
+import veterinaria.exceptions.NotAnExistingTurn;
 import veterinaria.models.client.Client;
 import veterinaria.models.client.ClientCollection;
 import veterinaria.models.pet.Pet;
@@ -28,6 +30,7 @@ public class Veterinaria {
     private void Menu() {
         int option;
         clientSet.fileToCollection();
+        turnsFileToCollection();
 
             do {
             System.out.println("~~~~~~~ Veterinaria Walrus ~~~~~~~\n");
@@ -55,7 +58,7 @@ public class Veterinaria {
         int option;
 
         do {
-            System.out.println("~~~~~~~ Veterinaria Walrus ~~~~~~~\n");
+            System.out.println("~~~~~~~ Menu Clientes ~~~~~~~\n");
             System.out.println("1 - Añadir Cliente.");
             System.out.println("2 - Modificar Cliente.");
             System.out.println("3 - Listar Clientes.");
@@ -94,14 +97,15 @@ public class Veterinaria {
     private void petMenu() {
         String DNI;
         Client aux;
-        System.out.println("~~~~~~~ Veterinaria Walrus ~~~~~~~\n");
         System.out.println("Ingrese el DNI del dueño de la mascota: ");
         DNI = scan.nextLine();
-        aux = clientSet.search(DNI);
-        if(aux != null) {
-            menuMascotas(aux);
-        } else {
-            System.out.println("El cliente no existe.");
+        try {
+            aux = clientSet.search(DNI);
+            if(aux != null) {
+                menuMascotas(aux);
+            }
+        } catch (NotAnExistingClient notAnExistingClient) {
+            notAnExistingClient.printStackTrace();
         }
     }
 
@@ -206,9 +210,12 @@ public class Veterinaria {
     // Apartado Schedule
     private void scheduleMenu(ClientCollection cc) {
         int option;
+        int aux=0;
+        boolean auxBoolean;
+        String auxString;
 
         do {
-            System.out.println("~~~~~~~ Veterinaria Walrus ~~~~~~~\n");
+            System.out.println("~~~~~~~ Menu Agenda ~~~~~~~\n");
             System.out.println("1 - Añadir Turno");
             System.out.println("2 - Modificar Turno.");
             System.out.println("3 - Listar Turnos.");
@@ -223,12 +230,30 @@ public class Veterinaria {
                     schedule.createTurn(cc);
                     break;
                 case 2:
+                        aux = askTurnNumber();
+                        auxBoolean = schedule.exist(aux);
+                        try {
+                            if (auxBoolean == true) {
+                                auxString = askTurnReason();
+                                try {
+                                    schedule.modifyTurn(aux, auxString);
+                                } catch (NotAnExistingTurn notAnExistingTurn) {
+                                    notAnExistingTurn.printStackTrace();
+                                }
+                            }else throw new NotAnExistingTurn("El turno ingresado no existe");
+                        }catch (NotAnExistingTurn ex) {
+                            System.out.println(ex.getMessage());
+                        }
                     break;
                 case 3:
                     System.out.println(schedule.showCollection());
                     break;
                 case 4:
-
+                    try {
+                        schedule.deleteTurn(removeTurnMenu());
+                    } catch (NotAnExistingTurn notAnExistingTurn) {
+                        notAnExistingTurn.printStackTrace();
+                    }
                     break;
                 case 0:
                     break;
@@ -245,16 +270,40 @@ public class Veterinaria {
         if (file.exists()) {
             try {
                 turnArrayList = jsonUtil.jsonToJava(jsonUtil.leer());
-                for (int i = 0; i < turnArrayList.size(); i++) {
-                    System.out.println(turnArrayList.get(i).toString());
-                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-
         
         //ArrayList to HashMAP
+        for (Turn turn : turnArrayList){
+            schedule.add(turn);
+        }
     }
+
+    private int removeTurnMenu(){
+        int turn = -1;
+        System.out.println(schedule.showCollection());
+        System.out.println("Ingrese el numero del turno que desea borrar: ");
+        turn = scan.nextInt();
+        return turn;
+    }
+
+    private int askTurnNumber(){
+        int turn = -1;
+        System.out.println(schedule.showCollection());
+        System.out.println("Ingrese el turno que desea modificar la razon: ");
+        turn = scan.nextInt();
+        scan.nextLine();
+        return turn;
+    }
+
+    private String askTurnReason(){
+        String reason="";
+        System.out.println("Ingrese la nueva razon: ");
+        reason = scan.nextLine();
+        return reason;
+    }
+
     // Fin Apartado Schedule
 }

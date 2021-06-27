@@ -11,6 +11,7 @@ public class Turn implements Serializable {
     private Client client;
     private String reason;
     private Date date;
+    private boolean status;
 
     public Turn() {
         turnsQuantity++;
@@ -18,6 +19,7 @@ public class Turn implements Serializable {
         client = new Client();
         reason = "";
         date = null;
+        status = true;
     }
 
     public Turn(Client client, String reason, Date date) {
@@ -26,6 +28,16 @@ public class Turn implements Serializable {
         this.client = client;
         this.reason = reason;
         this.date = date;
+        this.status = true;
+    }
+
+    public Turn(Client client, String reason, Date date, boolean status) {
+        turnsQuantity++;
+        this.turnNumber = turnsQuantity;
+        this.client = client;
+        this.reason = reason;
+        this.date = date;
+        this.status = status;
     }
 
     public int getTurnNumber() {
@@ -54,6 +66,14 @@ public class Turn implements Serializable {
 
     public Date getDate() {
         return date;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+
+    public boolean isStatus() {
+        return status;
     }
 
     @Override

@@ -81,7 +81,7 @@ public class jsonUtil {
                 String dateInString = fecha;
                 date = sdf.parse(dateInString);
 
-                Turn turn = new Turn(client, objTurn.getString("reason"), date);
+                Turn turn = new Turn(client, objTurn.getString("reason"), date, objTurn.getBoolean("status"));
                 turnArrayList.add(turn);
             }
 
