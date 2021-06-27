@@ -30,6 +30,47 @@ public class ClientCollection<E extends Person> implements ICollection, Serializ
         }
     }
 
+    public void create() {
+        try {
+            Client c;
+
+            String name, lastName, DNI, phone, address, paymentMethod;
+            System.out.println("~~~~~~~ Veterinaria Walrus ~~~~~~~\n");
+            do {
+                System.out.println("Ingrese el nombre del cliente: ");
+                name = scan.nextLine();
+            }while(name.length() == 0);
+            do {
+                System.out.println("Ingrese el apellido del cliente: ");
+                lastName = scan.nextLine();
+            }while(lastName.length() == 0);
+            do {
+                System.out.println("Ingrese el DNI del cliente: ");
+                DNI = scan.nextLine();
+            }while(DNI.length() == 0);
+            do {
+                System.out.println("Ingrese el teléfono del cliente: ");
+                phone = scan.nextLine();
+            }while(phone.length() == 0);
+            do {
+                System.out.println("Ingrese la dirección del cliente: ");
+                address = scan.nextLine();
+            }while(address.length() == 0);
+            do {
+                System.out.println("Ingrese el método de pago del cliente(Tarjeta/Efectivo): ");
+                paymentMethod = scan.nextLine();
+            }while (paymentMethod.length() == 0);
+
+            c = new Client(name, lastName, DNI, phone, address, paymentMethod);
+
+            if(c != null) {
+                clientSet.add((E) c);
+            }
+        }catch(Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
     @Override
     public String showCollection() {
         StringBuilder builder = new StringBuilder();
@@ -48,7 +89,98 @@ public class ClientCollection<E extends Person> implements ICollection, Serializ
     return "";
     }
 
+    public void update() {
+        int option;
+        String DNI;
+        Client found;
+        System.out.println("Ingrese el DNI del cliente a modificar: ");
+        DNI = scan.nextLine();
+        found = search(DNI);
+        if (found != null) {
+            System.out.println("1 - Modificar nombre.");
+            System.out.println("2 - Modificar apellido.");
+            System.out.println("3 - Modificar teléfono.");
+            System.out.println("4 - Modificar dirección.");
+            System.out.println("0 - Regresar.");
+            option = scan.nextInt();
+            scan.nextLine();
 
+            switch(option) {
+                case 1:
+                    nameModify(found);
+                    break;
+                case 2:
+                    lastNameModify(found);
+                    break;
+                case 3:
+                    phoneModify(found);
+                    break;
+                case 4:
+                    addressModify(found);
+                    break;
+                case 0:
+                    break;
+                default:
+                    System.out.println("Ingrese una opción válida.");
+                    break;
+            }
+        } else {
+            System.out.println("El cliente no existe.");
+        }
+    }
+
+
+    private void nameModify(Client c) {
+        String name;
+
+      // Buscamos el cliente y lo guardamos.
+        clientSet.remove(c);        // Removemos el cliente del hashSet genérico.
+        do {
+            System.out.println("Ingrese el nuevo nombre del Cliente: ");
+            name = scan.nextLine();
+        }while(name.length() == 0);
+        c.setName(name);         // Cambiamos el nombre del cliente.
+        clientSet.add((E) c);           // Ingresamos el cliente actualizado en la colección.
+    }
+
+    private void lastNameModify(Client c) {
+        String lastName;
+
+        // Buscamos el cliente y lo guardamos.
+        clientSet.remove(c);        // Removemos el cliente del hashSet genérico.
+        do {
+            System.out.println("Ingrese el nuevo apellido del Cliente: ");
+            lastName = scan.nextLine();
+        }while(lastName.length() == 0);
+        c.setLastName(lastName);         // Cambiamos el nombre del cliente.
+        clientSet.add((E) c);           // Ingresamos el cliente actualizado en la colección.
+    }
+
+    private void phoneModify(Client c) {
+        String phone;
+
+        // Buscamos el cliente y lo guardamos.
+        clientSet.remove(c);        // Removemos el cliente del hashSet genérico.
+        do {
+            System.out.println("Ingrese el nuevo teléfono del Cliente: ");
+            phone = scan.nextLine();
+        }while(phone.length() == 0);
+        c.setPhone(phone);         // Cambiamos el nombre del cliente.
+        clientSet.add((E) c);           // Ingresamos el cliente actualizado en la colección.
+    }
+
+    private void addressModify(Client c) {
+        String address;
+
+        // Buscamos el cliente y lo guardamos.
+        clientSet.remove(c);        // Removemos el cliente del hashSet genérico.
+        do {
+            System.out.println("Ingrese la nueva dirección del Cliente: ");
+            address = scan.nextLine();
+        }while(address.length() == 0);
+        c.setAddress(address);         // Cambiamos el nombre del cliente.
+        clientSet.add((E) c);           // Ingresamos el cliente actualizado en la colección.
+    }
 
     public Client search(String DNI) {
         Iterator<E> it = clientSet.iterator();
@@ -64,9 +196,25 @@ public class ClientCollection<E extends Person> implements ICollection, Serializ
         return found;
     }
 
-    public void remove(E obj) {
+    private void remove(E obj) {
         if(obj instanceof Client) {
             clientSet.remove(obj);
+        }
+    }
+
+    public void removeClient() {
+        String DNI;
+        Client found;
+        System.out.println("~~~~~~~ Veterinaria Walrus ~~~~~~~\n");
+        System.out.println("Ingrese el DNI del cliente a remover: ");
+        DNI = scan.nextLine();
+        found = search(DNI);  // Buscamos el cliente y lo guardamos.
+        if (found != null) {
+            remove((E) found);        // Removemos el cliente del hashSet genérico.
+            found.setStatus(false);         // Cambiamos el estado del cliente a falso.
+            add(found);           // Ingresamos el cliente actualizado en la colección.
+        } else {
+            System.out.println("El cliente no existe.");
         }
     }
 
