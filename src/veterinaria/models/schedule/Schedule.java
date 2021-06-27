@@ -20,7 +20,7 @@ public class Schedule implements ICollection, Serializable {
     }
 
     @Override
-    public StringBuilder showCollection() {
+    public String showCollection() {
         return null;
     }
 

@@ -74,13 +74,11 @@ public class Pet implements Serializable {
 
     @Override
     public String toString() {
-        return "Pet{" +
-                "name='" + name + '\'' +
-                ", race='" + race + '\'' +
-                ", age=" + age +
-                ", sex=" + sex +
-                ", weight=" + weight +
-                ", height=" + height +
-                '}' + "\n";
+        return "Nombre: '" + name + '\'' +
+                ", Raza: '" + race + '\'' +
+                ", Edad: " + age +
+                ", Sexo: " + sex +
+                ", Peso: " + weight +
+                ", Altura: " + height + "\n";
     }
 }

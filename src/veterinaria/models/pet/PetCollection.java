@@ -42,11 +42,12 @@ public class PetCollection implements ICollection, Serializable {
             } while (name.length() == 0);
             do {
                 System.out.println("Ingresa la Raza de la mascota");
-                race = scan.next();
+                race = scan.nextLine();
             } while (race.length() == 0);
             do {
                 System.out.println("Ingresa la edad de la mascota");
                 age = scan.nextInt();
+                scan.nextLine();
             } while (age <= 0);
             do {
                 System.out.println("Ingresa el sexo de la mascota (m/f)");
@@ -84,17 +85,17 @@ public class PetCollection implements ICollection, Serializable {
      * @return retorna un StringBuilder con la lista de mascotas
     * */
     @Override
-    public StringBuilder showCollection() {
+    public String showCollection() {
         StringBuilder builder = new StringBuilder();
         int num=-1;//sirve para marcar el indice en el submenu de mascotas y hacer mas facil la busqueda
         for (Pet pet : petList) {
             num++;
             if (pet.isStatus())//comprueba si el status del pet no es false
             {
-                builder.append(num).append(":").append(pet.toString());
+                builder.append("[").append(num).append("] ").append(pet.toString());
             }
         }
-        return builder;
+        return builder.toString();
     }
     /**
     *cambia el status de las mascotas para un "borrado" logico
@@ -188,41 +189,46 @@ public class PetCollection implements ICollection, Serializable {
         switch (op) {
 //nombre
             case 1 -> {
+                System.out.println("Ingrese el nuevo nombre de la mascota: ");
                 name = scan.next();
                 mascota.setName(name);
                 msj= "Realizado";
             }
 //raza
             case 2 -> {
+                System.out.println("Ingrese la nueva raza de la mascota: ");
                 race = scan.next();
                 mascota.setRace(race);
                 msj= "Realizado";
             }
 //edad
             case 3 -> {
+                System.out.println("Ingrese la nueva edad de la mascota: ");
                 age = scan.nextInt();
                 mascota.setAge(age);
                 msj= "Realizado";
             }
 //sexo
             case 4 -> {
+                System.out.println("Ingrese el nuevo sexo de la mascota: ");
                 sex = scan.next().charAt(0);
                 mascota.setSex(sex);
                 msj= "Realizado";
             }
 //peso
             case 5 -> {
+                System.out.println("Ingrese el nuevo peso de la mascota: ");
                 peso = scan.nextFloat();
                 mascota.setWeight(peso);
                 msj= "Realizado";
             }
             case 6 -> {
+                System.out.println("Ingrese la nueva altura de la mascota: ");
                 altura = scan.nextFloat();
                 mascota.setHeight(altura);
                 msj= "Realizado";
             }
             default -> msj= "Ingrese una opcion valida";
-
         }
         return msj;
     }
