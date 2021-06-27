@@ -1,19 +1,19 @@
 package veterinaria;
 
-import veterinaria.exceptions.NotAnExistingPet;
+/*import veterinaria.exceptions.NotAnExistingPet;
 import veterinaria.models.client.Client;
 import veterinaria.models.client.ClientCollection;
 import veterinaria.models.pet.Pet;
 import veterinaria.models.pet.PetCollection;
 import veterinaria.models.schedule.Schedule;
-import veterinaria.models.schedule.Turn;
+import veterinaria.models.schedule.Turn;*/
 import veterinaria.util.Veterinaria;
 
-import java.text.ParseException;
+/*import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.TimeZone;
+import java.util.TimeZone;*/
 
 public class Main {
 

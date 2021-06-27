@@ -4,6 +4,7 @@ import veterinaria.exceptions.NotAClientObjectException;
 import veterinaria.util.ICollection;
 
 import java.io.*;
+import java.security.spec.ECField;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Scanner;
@@ -29,6 +30,9 @@ public class ClientCollection<E extends Person> implements ICollection, Serializ
             System.out.println(ex.getMessage());
         }
     }
+    /**
+    * Este metodo se encarga de crear todos los datos de un cliente para agregarlo a la coleccion
+    * */
 
     public void create() {
         try {
@@ -59,7 +63,7 @@ public class ClientCollection<E extends Person> implements ICollection, Serializ
             do {
                 System.out.println("Ingrese el método de pago del cliente(Tarjeta/Efectivo): ");
                 paymentMethod = scan.nextLine();
-            }while (paymentMethod.length() == 0);
+            }while (!paymentMethod.equals("Tarjeta") && !paymentMethod.equals("tarjeta") && !paymentMethod.equals("Efectivo") && !paymentMethod.equals("efectivo"));
 
             c = new Client(name, lastName, DNI, phone, address, paymentMethod);
 
