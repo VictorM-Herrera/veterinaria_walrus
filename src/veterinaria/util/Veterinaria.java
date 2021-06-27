@@ -9,7 +9,6 @@ import veterinaria.models.schedule.Turn;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Scanner;
 
 public class Veterinaria {
@@ -40,22 +39,12 @@ public class Veterinaria {
             option = scan.nextInt();
             scan.nextLine();
 
-            switch(option) {
-                case 1:
-                    clientMenu();
-                    break;
-                case 2:
-                    petMenu();
-                    break;
-                case 3:
-                    scheduleMenu(clientSet);
-                    break;
-                case 0:
-                    System.out.println("Cerrando...");
-                    break;
-                default:
-                    System.out.println("Ingrese una opción válida.");
-                    break;
+            switch (option) {
+                case 1 -> clientMenu();
+                case 2 -> petMenu();
+                case 3 -> scheduleMenu(clientSet);
+                case 0 -> System.out.println("Cerrando...");
+                default -> System.out.println("Ingrese una opción válida.");
             }
         }while(option!=0);
     }
@@ -123,7 +112,7 @@ public class Veterinaria {
 
         do {
             System.out.println("~~~~~~~ Menu de Mascotas ~~~~~~~");
-            System.out.println("~~~~~~~ Cliente " + c.getName() + " " + c.getLastName() + " ~~~~~~~");
+            System.out.println("~~~~~~~ Cliente: " + c.getName() + " " + c.getLastName() + " ~~~~~~~");
             System.out.println("1 - Agregar Mascota.");
             System.out.println("2 - Listar Mascotas.");
             System.out.println("0 - Regresar.");
@@ -164,7 +153,10 @@ public class Veterinaria {
             case 1:
                 i = indiceMascota();
                 aux = c.getClientPetCollection().returnPet(i);
-                menuModificarMascota(aux, c);
+                if(aux != null)
+                {
+                    menuModificarMascota(aux, c);
+                }
                 break;
             case 2:
                 i = indiceMascota();
@@ -236,6 +228,7 @@ public class Veterinaria {
                     System.out.println(schedule.showCollection());
                     break;
                 case 4:
+
                     break;
                 case 0:
                     break;
