@@ -38,7 +38,7 @@ public class PetCollection implements ICollection, Serializable {
             //carga de datos
             do {
                 System.out.println("Ingresa el nombre de la mascota");
-                name = scan.next();
+                name = scan.nextLine();
             } while (name.length() == 0);
             do {
                 System.out.println("Ingresa la Raza de la mascota");
@@ -190,14 +190,14 @@ public class PetCollection implements ICollection, Serializable {
 //nombre
             case 1 -> {
                 System.out.println("Ingrese el nuevo nombre de la mascota: ");
-                name = scan.next();
+                name = scan.nextLine();
                 mascota.setName(name);
                 msj= "Realizado";
             }
 //raza
             case 2 -> {
                 System.out.println("Ingrese la nueva raza de la mascota: ");
-                race = scan.next();
+                race = scan.nextLine();
                 mascota.setRace(race);
                 msj= "Realizado";
             }

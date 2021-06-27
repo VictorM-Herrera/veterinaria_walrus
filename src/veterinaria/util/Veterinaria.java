@@ -38,8 +38,7 @@ public class Veterinaria {
                     clientMenu();
                     break;
                 case 2:
-                    petMenu(); // Puente para buscar el cliente y luego llama a MenuMascotas.
-                    //menuMascotas();//ta chckeado el funcionamento de lo poco q tengo
+                    petMenu();
                     break;
                 case 3:
                     break;
@@ -71,16 +70,16 @@ public class Veterinaria {
 
             switch (option) {
                 case 1:
-                    clientCreate();
+                    clientSet.create();
                     break;
                 case 2:
-                    clientUpdate();
+                    clientSet.update();
                     break;
                 case 3:
                     System.out.println(clientSet.showCollection());
                     break;
                 case 4:
-                    clientRemove();
+                    clientSet.removeClient();
                     break;
                 case 0:
                     break;
@@ -92,90 +91,6 @@ public class Veterinaria {
         }while(option!=0);
     }
 
-    private void clientCreate() {
-        try {
-            Client c;
-
-            String name, lastName, DNI, phone, address, paymentMethod;
-            System.out.println("~~~~~~~ Veterinaria Walrus ~~~~~~~\n");
-            System.out.println("Ingrese el nombre del cliente: ");
-            name = scan.nextLine();
-            System.out.println("Ingrese el apellido del cliente: ");
-            lastName = scan.nextLine();
-            System.out.println("Ingrese el DNI del cliente: ");
-            DNI = scan.nextLine();
-            System.out.println("Ingrese el teléfono del cliente: ");
-            phone = scan.nextLine();
-            System.out.println("Ingrese la dirección del cliente: ");
-            address = scan.nextLine();
-            System.out.println("Ingrese el método de pago del cliente(Tarjeta/Efectivo): ");
-            paymentMethod = scan.nextLine();
-
-            c = new Client(name, lastName, DNI, phone, address, paymentMethod);
-
-            if(c != null) {
-                clientSet.add(c);
-            }
-
-        }catch(Exception ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    private void clientUpdate() {
-        int option;
-        System.out.println("~~~~~~~ Veterinaria Walrus ~~~~~~~\n");
-        System.out.println("1 - Modificar nombre.");
-        System.out.println("0 - Regresar.");
-        option = scan.nextInt();
-        scan.nextLine();
-
-        switch(option) {
-            case 1:
-                nameModify();
-                break;
-            case 0:
-                break;
-            default:
-                System.out.println("Ingrese una opción válida.");
-                break;
-        }
-
-    }
-
-    private void nameModify() {
-        String DNI, name;
-        Client found;
-        System.out.println("~~~~~~~ Veterinaria Walrus ~~~~~~~\n");
-        System.out.println("Ingrese el DNI del cliente a modificar: ");
-        DNI = scan.nextLine();
-        found = clientSet.search(DNI);  // Buscamos el cliente y lo guardamos.
-        if (found != null) {
-            clientSet.remove(found);        // Removemos el cliente del hashSet genérico.
-            System.out.println("Ingrese el nuevo nombre del Cliente: ");
-            name = scan.nextLine();
-            found.setName(name);         // Cambiamos el nombre del cliente.
-            clientSet.add(found);           // Ingresamos el cliente actualizado en la colección.
-        } else {
-            System.out.println("El cliente no existe.");
-        }
-    }
-
-    private void clientRemove() {
-        String DNI;
-        Client found;
-        System.out.println("~~~~~~~ Veterinaria Walrus ~~~~~~~\n");
-        System.out.println("Ingrese el DNI del cliente a remover: ");
-        DNI = scan.nextLine();
-        found = clientSet.search(DNI);  // Buscamos el cliente y lo guardamos.
-        if (found != null) {
-            clientSet.remove(found);        // Removemos el cliente del hashSet genérico.
-            found.setStatus(false);         // Cambiamos el estado del cliente a falso.
-            clientSet.add(found);           // Ingresamos el cliente actualizado en la colección.
-        } else {
-            System.out.println("El cliente no existe.");
-        }
-    }
     // Fin Apartado Clientes
 
     // Apartado Pets
