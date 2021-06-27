@@ -15,7 +15,7 @@ public class Veterinaria {
 
     public Veterinaria() {
         clientSet = new ClientCollection();
-
+        schedule = new Schedule();
         Menu();
     }
 
@@ -41,6 +41,7 @@ public class Veterinaria {
                     petMenu();
                     break;
                 case 3:
+                    scheduleMenu(clientSet);
                     break;
                 case 0:
                     System.out.println("Cerrando...");
@@ -204,6 +205,39 @@ public class Veterinaria {
     // Fin Apartado Pets
 
     // Apartado Schedule
-    // mi código
+    private void scheduleMenu(ClientCollection cc) {
+        int option;
+
+        do {
+            System.out.println("~~~~~~~ Veterinaria Walrus ~~~~~~~\n");
+            System.out.println("1 - Añadir Turno");
+            System.out.println("2 - Modificar Turno.");
+            System.out.println("3 - Listar Turnos.");
+            System.out.println("4 - Eliminar Turno.");
+            System.out.println("0 - Regresar.");
+
+            option = scan.nextInt();
+            scan.nextLine();
+
+            switch(option) {
+                case 1:
+                    schedule.createTurn(cc);
+                    break;
+                case 2:
+
+                    break;
+                case 3:
+                    System.out.println(schedule.showCollection());
+                    break;
+                case 4:
+                    break;
+                case 0:
+                    break;
+                default:
+                    System.out.println("Ingrese una opción válida.");
+                    break;
+            }
+        }while(option!=0);
+    }
     // Fin Apartado Schedule
 }

@@ -12,7 +12,7 @@ import veterinaria.util.Veterinaria;
 public class Main {
 
     public static void main(String[] args) {
-        //Veterinaria vet = new Veterinaria();
+        Veterinaria vet = new Veterinaria();
         /*//prueba Pets
         Pet mascota = new Pet("max","perro",10,'m',5,1.9f);//0
         PetCollection lista=new PetCollection();

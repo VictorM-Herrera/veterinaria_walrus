@@ -3,6 +3,7 @@ package veterinaria.models.schedule;
 import veterinaria.models.client.Client;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
 
 public class Turn implements Serializable {
@@ -17,15 +18,15 @@ public class Turn implements Serializable {
         turnNumber = turnsQuantity;
         client = new Client();
         reason = "";
-        date = new Date();
+        date = null;
     }
 
-    public Turn(Client client, String reason) {
+    public Turn(Client client, String reason, Date date) {
         turnsQuantity++;
         this.turnNumber = turnsQuantity;
         this.client = client;
         this.reason = reason;
-        this.date = new Date();
+        this.date = date;
     }
 
     public int getTurnNumber() {
@@ -52,21 +53,13 @@ public class Turn implements Serializable {
         this.reason = reason;
     }
 
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
     @Override
     public String toString() {
-        return "Turn{" +
-                "turnNumber=" + turnNumber +
-                ", client=" + client.getName() + " " + client.getLastName() +
-                ", reason='" + reason + '\'' +
-                ", date=" + date +
+        return "{Número de Turno: " + turnNumber +
+                ", Cliente: " + client.getName() + " " + client.getLastName() +
+                ", DNI: " + client.getDNI() +
+                ", Motivo: '" + reason + '\'' +
+                ", Fecha: " + date.getDay() + "/" + date.getMonth() + "/" + date.getYear() +
                 '}';
     }
 }

@@ -35,7 +35,7 @@ public class Schedule implements ICollection, Serializable {
 
         while(it.hasNext()){
             Map.Entry<Integer, Turn> entry = (Map.Entry<Integer, Turn>) it.next();
-            builder.append(entry.getKey() + " / " + entry.getValue().toString() + "\n");
+            builder.append("[" + entry.getKey() + "] " + entry.getValue().toString() + "\n");
         }
         return builder.toString();
     }
@@ -53,22 +53,30 @@ public class Schedule implements ICollection, Serializable {
     public void createTurn(ClientCollection collection){
         Turn turn;
         Client client;
-        String dni="", reason;
-        Date date = new Date();
-
-
+        String dni="", reason, fecha;
+        Date date;
         //TODO PONER ESTO EN UNA EXCEPCION DE CLIENTE NO ENCONTRADO
 
-        System.out.println("Ingrese el DNI del cliente");
+        System.out.println("Ingrese el DNI del cliente: ");
         dni = scan.nextLine();
         client = collection.search(dni);
         if(client != null){
-            System.out.println("Ingrese la razon del turno");
+            System.out.println("Ingrese la razon del turno: ");
             reason = scan.nextLine();
-            turn = new Turn(client,reason);
+            do {
+                System.out.println("Ingrese la fecha del turno: dd/mm/yyyy");
+                fecha = scan.nextLine();
+                int year = Integer.valueOf(fecha.substring(6, 10));
+                int month = Integer.valueOf(fecha.substring(3, 5));
+                int day = Integer.valueOf(fecha.substring(0, 2));
+                System.out.println(year);
+                System.out.println(month);
+                System.out.println(day);
+                date = new Date(year, month, day);
+            }while(fecha.length() != 10);
+            turn = new Turn(client,reason, date);
             turnHashMap.put(turn.getTurnNumber(),turn);
         }
-
     }
 
     @Override
