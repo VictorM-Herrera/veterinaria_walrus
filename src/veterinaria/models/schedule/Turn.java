@@ -3,7 +3,6 @@ package veterinaria.models.schedule;
 import veterinaria.models.client.Client;
 
 import java.io.Serializable;
-import java.util.Calendar;
 import java.util.Date;
 
 public class Turn implements Serializable {
@@ -51,6 +50,10 @@ public class Turn implements Serializable {
 
     public void setReason(String reason) {
         this.reason = reason;
+    }
+
+    public Date getDate() {
+        return date;
     }
 
     @Override

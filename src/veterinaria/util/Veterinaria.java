@@ -5,17 +5,24 @@ import veterinaria.models.client.Client;
 import veterinaria.models.client.ClientCollection;
 import veterinaria.models.pet.Pet;
 import veterinaria.models.schedule.Schedule;
+import veterinaria.models.schedule.Turn;
 
+import java.io.*;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Scanner;
 
 public class Veterinaria {
     private ClientCollection<Client> clientSet;
+    private ArrayList<Turn> turnArrayList;
     private Schedule schedule;
     static Scanner scan = new Scanner(System.in);
+    private File file;
 
     public Veterinaria() {
         clientSet = new ClientCollection();
         schedule = new Schedule();
+        turnArrayList = new ArrayList<Turn>();
         Menu();
     }
 
@@ -23,7 +30,7 @@ public class Veterinaria {
         int option;
         clientSet.fileToCollection();
 
-        do {
+            do {
             System.out.println("~~~~~~~ Veterinaria Walrus ~~~~~~~\n");
             System.out.println("1 - Menu Clientes.");
             System.out.println("2 - Menu Mascotas.");
@@ -224,7 +231,6 @@ public class Veterinaria {
                     schedule.createTurn(cc);
                     break;
                 case 2:
-
                     break;
                 case 3:
                     System.out.println(schedule.showCollection());
@@ -237,7 +243,25 @@ public class Veterinaria {
                     System.out.println("Ingrese una opción válida.");
                     break;
             }
+            jsonUtil.grabar(schedule.turnMapToJson());
         }while(option!=0);
+    }
+
+    private void turnsFileToCollection() {
+        file = new File("turns.json");
+        if (file.exists()) {
+            try {
+                turnArrayList = jsonUtil.jsonToJava(jsonUtil.leer());
+                for (int i = 0; i < turnArrayList.size(); i++) {
+                    System.out.println(turnArrayList.get(i).toString());
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        
+        //ArrayList to HashMAP
     }
     // Fin Apartado Schedule
 }

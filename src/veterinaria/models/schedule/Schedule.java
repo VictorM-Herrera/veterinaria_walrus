@@ -1,5 +1,8 @@
 package veterinaria.models.schedule;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import veterinaria.models.client.Client;
 import veterinaria.models.client.ClientCollection;
 import veterinaria.util.ICollection;
@@ -8,6 +11,7 @@ import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 public class Schedule implements ICollection, Serializable {
@@ -81,6 +85,42 @@ public class Schedule implements ICollection, Serializable {
             turn = new Turn(client, reason, date);
             turnHashMap.put(turn.getTurnNumber(),turn);
         }
+    }
+
+
+    public JSONArray turnMapToJson() {
+
+        JSONArray result = null;
+        ArrayList<Turn> turnsArrayList = new ArrayList<>(turnHashMap.values());
+        System.out.println("--arraylist");
+        for(int i = 0; i < turnsArrayList.size(); i++) {
+            System.out.println(turnsArrayList.get(i));
+        }
+        try {
+            JSONArray turnJSONArray = new JSONArray();
+
+            for (int i = 0; i < turnsArrayList.size(); i++) {
+                JSONObject clientJSONObject = new JSONObject();
+                JSONObject turnJSONObject = new JSONObject();
+                clientJSONObject.put("name", turnsArrayList.get(i).getClient().getName());
+                clientJSONObject.put("lastName", turnsArrayList.get(i).getClient().getLastName());
+                clientJSONObject.put("DNI", turnsArrayList.get(i).getClient().getDNI());
+                clientJSONObject.put("phone", turnsArrayList.get(i).getClient().getPhone());
+                clientJSONObject.put("address", turnsArrayList.get(i).getClient().getAddress());
+                clientJSONObject.put("paymentMethod", turnsArrayList.get(i).getClient().getPaymentMethod());
+
+                turnJSONObject.put("turnNumber", turnsArrayList.get(i).getTurnNumber());
+                turnJSONObject.put("client", clientJSONObject);
+                turnJSONObject.put("reason", turnsArrayList.get(i).getReason());
+                turnJSONObject.put("date", turnsArrayList.get(i).getDate());
+
+                turnJSONArray.put(turnJSONObject);
+            }
+            result = turnJSONArray;
+        }catch(JSONException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
     @Override
